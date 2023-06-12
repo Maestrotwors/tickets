@@ -1,21 +1,6 @@
 <select [ngModel]="selectedValue"
 	(ngModelChange)="modelChanged($event)">
 	<option value="null">All</option>
-	<option *ngFor="let status of options" [value]="status.key">
+	<option *ngFor="let status of options; trackBy:identify" [value]="status.key">
 		{{status.value}}</option>
 </select>
-
-<!--<div *ngIf="(ticketsStatusTypes$ | async) as ticketsStatusTypes">
-	<div *ngIf="ticketsStatusTypes.length > 0">
-		<form [formGroup]="statusForm">
-			<select formControlName="currentStepInput"
-				[ngModel]="selectedStatus"
-				(ngModelChange)="statusFilterChanged($event)">
-				<option value="null">All</option>
-				<option *ngFor="let status of ticketsStatusTypes"
-					[value]="status.key">
-					{{status.value}}</option>
-			</select>
-		</form>
-	</div>
-</div>-->

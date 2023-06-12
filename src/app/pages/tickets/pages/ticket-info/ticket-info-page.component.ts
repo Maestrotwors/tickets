@@ -1,11 +1,11 @@
 import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TicketsStoreService } from 'src/app/services/tickets/tickets.store';
 import { TicketsService } from '../../../../services/tickets/tickets.service';
 import { startWith } from 'rxjs';
-
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-ticket-info-page',
   templateUrl: './ticket-info-page.component.html',
@@ -18,6 +18,7 @@ export class TicketInfoPageComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private ticketsService = inject(TicketsService);
   private ticketsStoreService = inject(TicketsStoreService);
+  private destroyRef = inject(DestroyRef);
 
   protected selectedTicketId$ = this.ticketsStoreService.selectedTicketId$;
   protected ticketInfo$ = this.ticketsStoreService.ticketInfo$.pipe(
@@ -43,19 +44,23 @@ export class TicketInfoPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.params.pipe().subscribe((params) => {
-      const ticketId = params['ticketId'] || null;
-      this.ticketsService.setTicketId(ticketId);
-    });
+    this.route.params
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((params) => {
+        const ticketId = params['ticketId'] || null;
+        this.ticketsService.setTicketId(ticketId);
+      });
 
-	this.ticketInfo$.subscribe(ticket => {
-		this.ticketForm.patchValue({
-			id: ticket?.id,
-			title: ticket?.title,
-			description: ticket?.description,
-			status: ticket?.status,
-		});
-	});
+    this.ticketInfo$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((ticket) => {
+        this.ticketForm.patchValue({
+          id: ticket?.id,
+          title: ticket?.title,
+          description: ticket?.description,
+          status: ticket?.status,
+        });
+      });
   }
 
   ngOnDestroy(): void {

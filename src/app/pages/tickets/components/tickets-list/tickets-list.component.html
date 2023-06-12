@@ -1,10 +1,10 @@
 <ng-container *ngIf="(ticketsList$ | async) as ticketsList; else loadingTmpl">
-	<div *ngFor="let ticket of ticketsList" 
+	<div *ngFor="let ticket of ticketsList; trackBy:identify" 
 		(click)="selectTicket(ticket.id)"
 		class="ticket-row" [class.selected-ticket]="ticket.id === (selectedTicketId$ | async)">
 		<div class="title-container">
 			<div class="title">{{ticket.title}}</div>
-			<div class="delete-btn">x</div>
+			<div class="delete-btn" (click)="deleteTicket(ticket.id); $event.stopPropagation();">x</div>
 		</div>
 		<div class="ticket-additional-info">
 			<div>id{{ticket.id}}</div>

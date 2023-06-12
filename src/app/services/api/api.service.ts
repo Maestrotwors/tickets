@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { delay, filter, map, Observable, of } from 'rxjs';
+import { delay, filter, map, Observable, of, tap } from 'rxjs';
 import { TicketStatusInterface } from 'src/app/interfaces/tickets/ticket-status.interface';
 import { TicketsFilter } from 'src/app/interfaces/tickets/tickets-filter.interface';
 import { Ticket } from '../../interfaces/tickets/ticket.interface';
@@ -39,7 +39,10 @@ export class ApiService {
       title: 'title ' + id,
       status: +id > 10 ? 1 : 2,
       description: 'description ' + id,
-    }).pipe(delay(200));
+    }).pipe(
+      delay(200),
+      tap((x) => console.log(x))
+    );
   }
 
   getTicketsStatusTypes(): Observable<TicketStatusInterface[]> {
@@ -54,7 +57,9 @@ export class ApiService {
 
   createTicket() {}
 
-  deleteTicket() {}
+  deleteTicket(id: string): Observable<{status: string}> {
+    return of({ status: 'ok' }).pipe(delay(400));
+  }
 
   updateTicket() {}
 }

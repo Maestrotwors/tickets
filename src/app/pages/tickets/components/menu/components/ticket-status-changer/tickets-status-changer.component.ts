@@ -1,5 +1,5 @@
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { AfterContentInit, ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Dictionary } from '../../../../../../interfaces/dictionary.interface';
 
@@ -21,6 +21,10 @@ import { Dictionary } from '../../../../../../interfaces/dictionary.interface';
 export class TicketsStatusChangerComponent implements ControlValueAccessor {
   @Input() options: Dictionary | null = [];
   protected selectedValue = 0;
+
+  identify(index: number, item: any) {
+    return item.id;
+  }
 
   onChange: any = (value: number) => {};
 

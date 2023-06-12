@@ -7,7 +7,9 @@
 				<label>
 					Title:
 					<input formControlName="title" placeholder="title">
-					<div class="error-msg">Title must have 1-100 symbols</div>
+					<div class="error-msg" *ngIf="ticketForm.controls['title'].invalid && (ticketForm.controls['title'].dirty || ticketForm.controls['title'].touched)">
+						Title must have 1-100 symbols
+					</div>
 				</label>
 			</div>
 			<div>
@@ -22,10 +24,12 @@
 				<label>
 					Description:
 					<textarea formControlName="description" placeholder="description"></textarea>
-					<div class="error-msg">Description must have 1-1000 symbols</div>
+					<div class="error-msg" *ngIf="ticketForm.controls['description'].invalid && (ticketForm.controls['description'].dirty || ticketForm.controls['description'].touched)">
+						Description must have 1-1000 symbols
+					</div>
 				</label>
 			</div>
-			<button type="submit">Update ticket</button>
+			<button type="submit" [disabled]="!ticketForm.valid">Update ticket</button>
 		</form>
 	</div>
 </div>

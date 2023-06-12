@@ -1,7 +1,7 @@
 <form class="menu-container" [formGroup]="menuTicketsForm">
 	<button (click)="goToMainPage()">go back</button>
 	<button (click)="goToCreateTicketPage()">create ticket</button>
-	<div *ngIf="(ticketsStatusTypes$ | async) as ticketsStatusTypes">
+	<div *ngIf="true && (ticketsStatusTypes$ | async) as ticketsStatusTypes">
 		<div *ngIf="ticketsStatusTypes.length > 0">
 			<app-tickets-status-changer [options]="ticketsStatusTypes"
 				formControlName="ticketStatusInput"></app-tickets-status-changer>

@@ -57,7 +57,9 @@ export class TicketsMenuComponent implements OnInit {
   }
 
   goToCreateTicketPage() {
-    this.router.navigate(['tickets', 'new']);
+    this.router.navigate(['tickets', 'new'], {
+      queryParamsHandling: 'merge',
+    });
   }
 
   statusFilterChanged(status: string | number | null) {
