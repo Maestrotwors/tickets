@@ -1,0 +1,35 @@
+<div>
+	info ticket {{selectedTicketId$ | async}}
+	<div *ngIf="(ticketInfo$ | async) as ticketInfo; else loadingTmpl">
+		<div>{{ticketInfo | json}}</div>
+		<form [formGroup]="ticketForm" (ngSubmit)="updateTicket(ticketForm)">
+			<div>
+				<label>
+					Title:
+					<input formControlName="title" placeholder="title">
+					<div class="error-msg">Title must have 1-100 symbols</div>
+				</label>
+			</div>
+			<div>
+				<label>
+					Status:
+					<select formControlName="status">
+						<option *ngFor="let status of ticketsStatusTypes$ | async" [ngValue]="status.key">{{status.value}}</option>
+					</select>
+				</label>
+			</div>
+			<div>
+				<label>
+					Description:
+					<textarea formControlName="description" placeholder="description"></textarea>
+					<div class="error-msg">Description must have 1-1000 symbols</div>
+				</label>
+			</div>
+			<button type="submit">Update ticket</button>
+		</form>
+	</div>
+</div>
+
+<ng-template #loadingTmpl>
+	<div>Loading...</div>
+</ng-template>

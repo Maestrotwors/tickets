@@ -1,0 +1,23 @@
+.tickets-container {
+	height: 100vh;
+	max-height: 100vh;
+	overflow-y: hidden;
+	display: grid;
+	grid-template-rows: auto 1fr;
+}
+
+.part-content {
+	display: grid;
+	box-sizing: border-box;
+	height: 100%;
+	border-top: 1px solid rgb(206, 206, 206);
+	grid-template-columns: 400px 1fr;
+
+	.part-tickets-list {
+		overflow-y: scroll;
+	}
+	
+	.part-ticket-info {
+		overflow-y: scroll;
+	}
+}
