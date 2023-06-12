@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { TicketsStoreService } from './tickets.store';
 import { ApiService } from '../api/api.service';
-import { tap, startWith, distinctUntilChanged } from 'rxjs';
+import { tap, startWith, distinctUntilChanged, Observable } from 'rxjs';
 import { TicketStatusInterface } from 'src/app/interfaces/tickets/ticket-status.interface';
 import { ticketStatusAdaptor } from './adaptors/ticket-status.adaptor';
 import { TicketsFilter } from 'src/app/interfaces/tickets/tickets-filter.interface';
@@ -20,7 +20,7 @@ export class TicketsService {
     this.ticketsStore.selectedTicketId$.next(ticketId);
   }
 
-  getTickets(filter: TicketsFilter) {
+  getTickets(filter: TicketsFilter): Observable<Ticket[] | null> {
     return this.api.getTickets(filter).pipe(
       startWith(null),
       tap((tickets) => {
@@ -29,11 +29,11 @@ export class TicketsService {
     );
   }
 
-  getTicketInfo(id: string) {
+  getTicketInfo(id: string): Observable<Ticket | null> {
     return this.api.getTicketById(id).pipe(startWith(null));
   }
 
-  getTicketsStatusTypes() {
+  getTicketsStatusTypes(): Observable<TicketStatusInterface[]> {
     return this.api.getTicketsStatusTypes().pipe(
       tap((ticketsStatusTypes: TicketStatusInterface[]) => {
         this.ticketsStore.ticketsStatusTypes$.next(
@@ -43,7 +43,7 @@ export class TicketsService {
     );
   }
 
-  changeTicketsFilter(filters: TicketsFilter) {
+  changeTicketsFilter(filters: TicketsFilter): void {
     this.router.navigate([], {
       queryParams: filters,
       queryParamsHandling: 'merge',
@@ -51,17 +51,20 @@ export class TicketsService {
   }
 
   deleteTicket(id: string) {
-    return this.api.deleteTicket(id).pipe(tap(response => {
-      if (response.status === 'ok') {
-        let ticketsList = this.ticketsStore.ticketsList$.getValue() as Ticket[];
-        ticketsList = ticketsList?.filter(ticket => {
-          return ticket.id !== id;
-        });
-        this.ticketsStore.ticketsList$.next(ticketsList);
-        this.router.navigate(['tickets'], {
-          queryParamsHandling: 'merge',
-        });
-      }
-    }));
+    return this.api.deleteTicket(id).pipe(
+      tap((response) => {
+        if (response.status === 'ok') {
+          let ticketsList =
+            this.ticketsStore.ticketsList$.getValue() as Ticket[];
+          ticketsList = ticketsList?.filter((ticket) => {
+            return ticket.id !== id;
+          });
+          this.ticketsStore.ticketsList$.next(ticketsList);
+          this.router.navigate(['tickets'], {
+            queryParamsHandling: 'merge',
+          });
+        }
+      })
+    );
   }
 }

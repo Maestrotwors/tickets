@@ -45,6 +45,5 @@ export class TicketsStatusChangerComponent implements ControlValueAccessor {
   modelChanged(value: number) {
     this.selectedValue = value;
     this.onChange(value);
-    this.onTouch();
   }
 }

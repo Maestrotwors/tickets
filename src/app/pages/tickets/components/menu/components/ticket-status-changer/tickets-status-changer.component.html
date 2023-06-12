@@ -1,6 +1,4 @@
-<select [ngModel]="selectedValue"
-	(ngModelChange)="modelChanged($event)">
+<select [ngModel]="selectedValue" (ngModelChange)="modelChanged($event)">
 	<option value="null">All</option>
-	<option *ngFor="let status of options; trackBy:identify" [value]="status.key">
-		{{status.value}}</option>
+	<option *ngFor="let status of options; trackBy:identify" [value]="status.key">{{status.value}}</option>
 </select>

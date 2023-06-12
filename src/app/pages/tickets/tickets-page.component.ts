@@ -6,7 +6,7 @@ import { TicketsMenuComponent } from './components/menu/tickets-menu.component';
 import { TicketsListComponent } from './components/tickets-list/tickets-list.component';
 import { TicketInfoPageComponent } from './pages/ticket-info/ticket-info-page.component';
 import { TicketsStoreService } from '../../services/tickets/tickets.store';
-import { debounceTime, filter, switchMap } from 'rxjs';
+import { debounceTime, filter, switchMap, distinctUntilChanged } from 'rxjs';
 import { TicketsFilter } from 'src/app/interfaces/tickets/tickets-filter.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
@@ -57,6 +57,8 @@ export class TicketsPageComponent {
 
     this.ticketsStore.ticketsStatusFilter$
       .pipe(
+        distinctUntilChanged(),
+        debounceTime(50),
         switchMap((filter: TicketsFilter) => {
           return this.ticketsService.getTickets(filter);
         }),

@@ -12,7 +12,7 @@ export class ApiService {
 
   getTickets(filters: TicketsFilter = {}): Observable<Ticket[]> {
     const mockTickets: Ticket[] = [];
-    for (let i = 1; i < 51; i++) {
+    for (let i = 1; i < 50; i++) {
       mockTickets.push({
         id: i.toString(),
         title: 'title ' + i,
