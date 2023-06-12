@@ -6,7 +6,8 @@ import { TicketsMenuComponent } from './components/menu/tickets-menu.component';
 import { TicketsListComponent } from './components/tickets-list/tickets-list.component';
 import { TicketInfoPageComponent } from './pages/ticket-info/ticket-info-page.component';
 import { TicketsStoreService } from '../../services/tickets/tickets.store';
-import { combineLatest, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs';
+import { TicketsFilter } from 'src/app/interfaces/tickets/tickets-filter.interface';
 @Component({
   selector: 'app-tickets-page',
   templateUrl: './tickets-page.component.html',
@@ -28,10 +29,12 @@ export class TicketsPageComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    combineLatest([
+	this.ticketsService.getTicketsStatusTypes().subscribe();
+
+    /*combineLatest([
       this.ticketsService.getTickets(),
       this.ticketsService.getTicketsStatusTypes(),
-    ]).subscribe();
+    ]).subscribe();*/
 
     this.ticketsStore.selectedTicketId$
       .pipe(
@@ -49,6 +52,12 @@ export class TicketsPageComponent implements OnInit {
     this.route.queryParams.subscribe((queryParams) => {
 		this.ticketsStore.ticketsStatusFilter$.next(queryParams);
 	});
+
+	this.ticketsStore.ticketsStatusFilter$.pipe(
+		switchMap((filter: TicketsFilter) => {
+			return this.ticketsService.getTickets(filter);
+		})
+	).subscribe();
 
   }
 }

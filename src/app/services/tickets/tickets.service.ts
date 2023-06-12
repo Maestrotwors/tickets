@@ -19,9 +19,11 @@ export class TicketsService {
     this.ticketsStore.selectedTicketId$.next(ticketId);
   }
 
-  getTickets() {
-    return this.api.getTickets().pipe(
+  getTickets(filter: TicketsFilter) {
+    console.log(filter);
+    return this.api.getTickets(filter).pipe(
       tap((tickets) => {
+        console.log('getTickets triggered');
         this.ticketsStore.ticketsList$.next(tickets);
       })
     );
@@ -44,7 +46,7 @@ export class TicketsService {
   changeTicketsFilter(filters: TicketsFilter) {
     this.router.navigate([], {
       queryParams: filters,
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
   }
 }

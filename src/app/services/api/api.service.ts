@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { delay, Observable, of } from 'rxjs';
+import { delay, filter, map, Observable, of } from 'rxjs';
 import { TicketStatusInterface } from 'src/app/interfaces/tickets/ticket-status.interface';
+import { TicketsFilter } from 'src/app/interfaces/tickets/tickets-filter.interface';
 import { Ticket } from '../../interfaces/tickets/ticket.interface';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { Ticket } from '../../interfaces/tickets/ticket.interface';
 export class ApiService {
   //private http = inject(HttpClient);
 
-  getTickets(): Observable<Ticket[]> {
+  getTickets(filters: TicketsFilter = {}): Observable<Ticket[]> {
     const mockTickets: Ticket[] = [];
     for (let i = 1; i < 51; i++) {
       mockTickets.push({
@@ -19,7 +20,17 @@ export class ApiService {
         description: 'description ' + i,
       });
     }
-    return of(mockTickets).pipe(delay(1000));
+    return of(mockTickets).pipe(
+      delay(1000),
+      map((tickets: Ticket[]) => {
+        return tickets.filter((ticket) => {
+          if (filters.status) {
+            return +ticket.status === +filters.status;
+          }
+          return ticket;
+        });
+      })
+    );
   }
 
   getTicketById(id: string): Observable<Ticket> {
