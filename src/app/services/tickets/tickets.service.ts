@@ -67,4 +67,33 @@ export class TicketsService {
       })
     );
   }
+
+  createTicket(ticket: Ticket): boolean {
+    const newTicket = {
+      ...ticket,
+      id: Math.floor(Math.random() * 100000000).toString(),
+    };
+    // add ticket. Its works before list updated
+    console.log(newTicket);
+    const ticketsList = this.ticketsStore.ticketsList$.getValue();
+    ticketsList?.push(newTicket);
+    this.ticketsStore.ticketsList$.next(ticketsList);
+    alert('added');
+    return true;
+  }
+
+  // update ticket. Its works before list updated
+  updateTicket(ticket: Ticket): boolean {
+    const ticketsList = this.ticketsStore.ticketsList$.getValue();
+    const ticketIndex = ticketsList?.findIndex((t) => t.id === ticket.id);
+    if (!ticketsList || !ticketIndex || ticketIndex === -1) {
+      alert('oops. Error');
+      return false;
+    }
+    ticketsList[ticketIndex] = ticket;
+    this.ticketsStore.ticketsList$.next(ticketsList);
+    return true;
+  }
+
+  //private
 }

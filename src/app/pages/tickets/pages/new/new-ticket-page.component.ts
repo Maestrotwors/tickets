@@ -2,6 +2,7 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TicketsStoreService } from 'src/app/services/tickets/tickets.store';
+import { TicketsService } from '../../../../services/tickets/tickets.service';
 
 @Component({
   selector: 'app-ticket-new-page',
@@ -13,6 +14,7 @@ import { TicketsStoreService } from 'src/app/services/tickets/tickets.store';
 })
 export class TicketNewPageComponent {
   private ticketsStoreService = inject(TicketsStoreService);
+  private ticketsService = inject(TicketsService);
   protected ticketsStatusTypes$ = this.ticketsStoreService.ticketsStatusTypes$;
 
   ticketForm: FormGroup = new FormGroup({
@@ -29,6 +31,9 @@ export class TicketNewPageComponent {
   });
 
   createTicket(form: FormGroup) {
-    console.log(form);
+    console.log(form.value);
+    this.ticketsService.createTicket(form.value);
+    this.ticketForm.reset();
+    this.ticketForm.controls['status'].patchValue(0);
   }
 }

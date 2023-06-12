@@ -40,7 +40,7 @@ export class TicketInfoPageComponent implements OnInit, OnDestroy {
   });
 
   updateTicket(form: FormGroup) {
-    console.log(form);
+    this.ticketsService.updateTicket(form.value);
   }
 
   ngOnInit(): void {
