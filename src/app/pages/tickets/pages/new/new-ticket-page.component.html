@@ -1,3 +1,38 @@
 <div>
 	<div>Create new Ticket</div>
+	<div>
+		<form [formGroup]="ticketForm" (ngSubmit)="createTicket(ticketForm)">
+			<div>
+				<label>
+					Title:
+					<input formControlName="title" placeholder="title">
+					<div class="error-msg"
+						*ngIf="ticketForm.controls['title'].invalid && (ticketForm.controls['title'].dirty || ticketForm.controls['title'].touched)">
+						Title must have 1-100 symbols
+					</div>
+				</label>
+			</div>
+			<div>
+				<label>
+					Status:
+					<select formControlName="status">
+						<option *ngFor="let status of ticketsStatusTypes$ | async"
+							[ngValue]="status.key">{{status.value}}</option>
+					</select>
+				</label>
+			</div>
+			<div>
+				<label>
+					Description:
+					<textarea formControlName="description"
+						placeholder="description"></textarea>
+					<div class="error-msg"
+						*ngIf="ticketForm.controls['description'].invalid && (ticketForm.controls['description'].dirty || ticketForm.controls['description'].touched)">
+						Description must have 1-1000 symbols
+					</div>
+				</label>
+			</div>
+			<button type="submit" [disabled]="!ticketForm.valid">Create ticket</button>
+		</form>
+	</div>
 </div>

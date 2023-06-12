@@ -1,13 +1,34 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TicketsStoreService } from 'src/app/services/tickets/tickets.store';
 
 @Component({
   selector: 'app-ticket-new-page',
   templateUrl: './new-ticket-page.component.html',
   styleUrls: ['./new-ticket-page.component.scss'],
-  imports: [],
+  imports: [AsyncPipe, NgIf, NgForOf, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class TicketNewPageComponent {
+  private ticketsStoreService = inject(TicketsStoreService);
+  protected ticketsStatusTypes$ = this.ticketsStoreService.ticketsStatusTypes$;
 
+  ticketForm: FormGroup = new FormGroup({
+    id: new FormControl(0, [Validators.required]),
+    title: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(1000),
+    ]),
+    status: new FormControl(0, [Validators.required]),
+  });
+
+  createTicket(form: FormGroup) {
+    console.log(form);
+  }
 }

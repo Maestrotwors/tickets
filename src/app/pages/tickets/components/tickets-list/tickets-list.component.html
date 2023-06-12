@@ -1,19 +1,31 @@
-<ng-container *ngIf="(ticketsList$ | async) as ticketsList; else loadingTmpl">
-	<div *ngFor="let ticket of ticketsList; trackBy:identify" 
-		(click)="selectTicket(ticket.id)"
-		class="ticket-row" [class.selected-ticket]="ticket.id === (selectedTicketId$ | async)">
-		<div class="title-container">
-			<div class="title">{{ticket.title}}</div>
-			<div class="delete-btn" (click)="deleteTicket(ticket.id); $event.stopPropagation();">x</div>
-		</div>
-		<div class="ticket-additional-info">
-			<div>id{{ticket.id}}</div>
-			<div>{{ticket.status | dictionaryPipe: (ticketsStatusTypes$ | async)}}
+<div class="container">
+	<ng-container *ngIf="(ticketsList$ | async) as ticketsList; else loadingTmpl">
+		<ng-container *ngIf="ticketsList.length > 0; else notFoundTmpl">
+			<div *ngFor="let ticket of ticketsList; trackBy:identify"
+				(click)="selectTicket(ticket.id)" class="ticket-row"
+				[class.selected-ticket]="ticket.id === (selectedTicketId$ | async)">
+				<div class="title-container">
+					<div class="title">{{ticket.title}}</div>
+					<div class="delete-btn"
+						(click)="deleteTicket(ticket.id); $event.stopPropagation();">
+						x</div>
+				</div>
+				<div class="ticket-additional-info">
+					<div>id{{ticket.id}}</div>
+					<div>{{ticket.status | dictionaryPipe: (ticketsStatusTypes$ |
+						async)}}
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-</ng-container>
+		</ng-container>
+	</ng-container>
+</div>
+
 
 <ng-template #loadingTmpl>
 	<div>Loading...</div>
+</ng-template>
+
+<ng-template #notFoundTmpl>
+	<div>Not found.</div>
 </ng-template>

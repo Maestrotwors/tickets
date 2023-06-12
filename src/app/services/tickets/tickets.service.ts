@@ -22,6 +22,7 @@ export class TicketsService {
 
   getTickets(filter: TicketsFilter) {
     return this.api.getTickets(filter).pipe(
+      startWith(null),
       tap((tickets) => {
         this.ticketsStore.ticketsList$.next(tickets);
       })

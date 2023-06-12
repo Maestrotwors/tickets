@@ -1,8 +1,7 @@
 .tickets-container {
-	height: 100vh;
+	height: 100vh; 
 	max-height: 100vh;
-	overflow-y: hidden;
-	display: grid;
+	display:  grid;
 	grid-template-rows: auto 1fr;
 }
 
@@ -14,10 +13,12 @@
 	grid-template-columns: 400px 1fr;
 
 	.part-tickets-list {
+		height: 100%;
 		overflow-y: scroll;
 	}
 	
 	.part-ticket-info {
+		height: 100%;
 		overflow-y: scroll;
 	}
 }
