@@ -94,6 +94,4 @@ export class TicketsService {
     this.ticketsStore.ticketsList$.next(ticketsList);
     return true;
   }
-
-  //private
 }

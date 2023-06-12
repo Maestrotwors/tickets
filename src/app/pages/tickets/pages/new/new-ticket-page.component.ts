@@ -31,7 +31,6 @@ export class TicketNewPageComponent {
   });
 
   createTicket(form: FormGroup) {
-    console.log(form.value);
     this.ticketsService.createTicket(form.value);
     this.ticketForm.reset();
     this.ticketForm.controls['status'].patchValue(0);

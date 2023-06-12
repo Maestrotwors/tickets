@@ -7,7 +7,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { skip } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
+import { NzButtonModule } from 'ng-zorro-antd/button';
 @Component({
   selector: 'app-tickets-menu',
   templateUrl: './tickets-menu.component.html',
@@ -17,6 +17,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     AsyncPipe,
     ReactiveFormsModule,
     NgIf,
+    NzButtonModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
